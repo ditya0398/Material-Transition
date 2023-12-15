@@ -105,10 +105,28 @@ class MeshLayer extends Layer{
           uniform sampler2D tPrevious1;
           varying vec2 vUv;
           uniform float time;
+
+          vec3 hermiteInterpolation(vec3 color1, vec3 color2, float t) {
+            float t2 = t * t;
+            float t3 = t2 * t;
+        
+            // Hermite interpolation formula
+            float h1 = 2.0 * t3 - 3.0 * t2 + 1.0;
+            float h2 = -2.0 * t3 + 3.0 * t2;
+            float h3 = t3 - 2.0 * t2 + t;
+            float h4 = t3 - t2;
+        
+            // Interpolate each component separately
+            vec3 result = color1 * h1 + color2 * h2 + (color1 - color2) * h3 + (color2 - color1) * h4;
+        
+            return result;
+        }
           void main() {
             vec4 color = texture2D(tPrevious, vUv);
             vec4 color2 = texture2D(tPrevious1, vUv);
-            vec3 newCol = mix(color, color2, time).rgb;
+            // vec3 newCol = mix(color, color2, time).rgb;
+            vec3 newCol = hermiteInterpolation(color.rgb, color2.rgb, time);
+
             gl_FragColor = vec4(newCol,1.0);
           }
         `,
