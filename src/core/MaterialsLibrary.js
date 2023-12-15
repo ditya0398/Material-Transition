@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { ShaderMaterial } from "three";
-import { fragmentShader, fragmentShaderCellularNoise, fragmentShaderClouds, fragmentShaderDomainWarp, fragmentShaderFire, fragmentShaderLava, fragmentShaderVornoiNoise, fragmentShaderfBM, vertexShader, vertexShaderCommon, vertexShaderLava } from "./shaders";
+import { fragmentShader, fragmentShaderBlueColor, fragmentShaderCellularNoise, fragmentShaderClouds, fragmentShaderDomainWarp, fragmentShaderFire, fragmentShaderLava, fragmentShaderRedColor, fragmentShaderVornoiNoise, fragmentShaderfBM, vertexShader, vertexShaderCommon, vertexShaderLava } from "./shaders";
 
 /*
     Material Library contains all the materials
@@ -69,8 +69,10 @@ class MaterialsLibrary
         //    this.createMaterial(true, uniforms, vertexShader, fragmentShader, 'Classic Perlin', MaterialsLibrary.MaterialType.custom); 
         //    this.createMaterial(false, uniforms, vertexShaderLava, fragmentShaderLava, 'Lava Noise', MaterialsLibrary.MaterialType.custom); 
         //    this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderFire, 'fire noise', MaterialsLibrary.MaterialType.custom);       
-           this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderfBM, 'fBM Noise', MaterialsLibrary.MaterialType.custom);       
-           this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderDomainWarp, 'domain warp noise', MaterialsLibrary.MaterialType.custom);  
+           this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderRedColor, 'Red Color', MaterialsLibrary.MaterialType.custom);
+           this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderfBM, 'fBM Noise', MaterialsLibrary.MaterialType.custom); 
+           this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderBlueColor, 'Blue Color', MaterialsLibrary.MaterialType.custom);      
+           // this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderDomainWarp, 'domain warp noise', MaterialsLibrary.MaterialType.custom);  
            this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderClouds, 'Value Noise',MaterialsLibrary.MaterialType.custom);      
            this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderCellularNoise, 'cellular noise', MaterialsLibrary.MaterialType.custom); 
            

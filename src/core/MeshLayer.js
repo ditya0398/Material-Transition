@@ -19,6 +19,9 @@ class MeshLayer extends Layer{
     cameraSecondScene = null;
     finalScene = null;
     renderer = null;
+    timeDelta = 0.0;
+    firstMesh =  null;
+    secondMesh =  null;
     constructor(_scene, _meshGeom, _isVisible, _renderer){
         super();
         this.toBeRendered = _isVisible;
@@ -36,61 +39,11 @@ class MeshLayer extends Layer{
         this.start = Date.now();
     }
 
+  
     createMaterialSpecificThings(){
 
-// Vertex shader
-const vertexShader = `
-void main() {
-  gl_Position = vec4(position, 1.0);
-}
-`;
-
-// Fragment shader
-const fragmentShader = `
-precision highp float;
-
-void main() {
-  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); // Red color
-}
-`;
-
-// Vertex shader
-const vertexShader1 = `
-void main() {
-  gl_Position = vec4(position, 1.0);
-}
-`;
-
-// Fragment shader
-const fragmentShader1 = `
-precision highp float;
-
-void main() {
-  gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0); // Red color
-}
-`;
-const redQuadMaterial = new THREE.ShaderMaterial({
-  uniforms: {
-    modelViewMatrix: { value: new THREE.Matrix4() },
-    projectionMatrix: { value: new THREE.Matrix4() },
-  },
-  vertexShader: vertexShader,
-  fragmentShader: fragmentShader,
-});
-
-
-const greenQuadMaterial = new THREE.ShaderMaterial({
-  uniforms: {
-    modelViewMatrix: { value: new THREE.Matrix4() },
-    projectionMatrix: { value: new THREE.Matrix4() },
-  },
-  vertexShader: vertexShader1,
-  fragmentShader: fragmentShader1,
-});
-
-
       const geometry = this.meshGeometry;
-      const _mesh = new Mesh(geometry, MaterialsLibrary.materials[0]);
+      this.firstMesh = new Mesh(geometry, MaterialsLibrary.materials[0]);
 
       //Setup things for first scene
       this.sceneFirstMaterial = new THREE.Scene();
@@ -104,15 +57,15 @@ const greenQuadMaterial = new THREE.ShaderMaterial({
 
       this.cameraFirstScene = cameraLayer.getCamera();
       this.renderTargetFirstMaterial = new THREE.WebGLRenderTarget(1024,1024);
-      this.sceneFirstMaterial.add(_mesh);
+      this.sceneFirstMaterial.add(this.firstMesh);
 
 
       //setup scene for the second scene
       this.sceneSecondMaterial = new THREE.Scene();
       this.cameraSecondScene = cameraLayer.getCamera();
       this.renderTargetSecondMaterial = new THREE.WebGLRenderTarget(1024,1024);
-      const _mesh1 = new Mesh(geometry, greenQuadMaterial);
-      this.sceneSecondMaterial.add(_mesh1);
+      this.secondMesh = new Mesh(geometry, MaterialsLibrary.materials[4]);
+      this.sceneSecondMaterial.add(this.secondMesh);
 
 
       this.renderer.setRenderTarget(this.renderTargetFirstMaterial);
@@ -122,20 +75,22 @@ const greenQuadMaterial = new THREE.ShaderMaterial({
       this.renderer.setRenderTarget(null);
     
     
+      
       this.renderer.setRenderTarget(this.renderTargetSecondMaterial);
       
       this.renderer.render(this.sceneSecondMaterial, this.cameraSecondScene);
       
       this.renderer.setRenderTarget(null);
 
+
     }
 
     initFinalSceneMesh = () => {
-      
       const secondMaterial = new THREE.ShaderMaterial({
         uniforms: {
           tPrevious: {type: 't', value: this.renderTargetFirstMaterial.texture},
           tPrevious1: {type: 't', value: this.renderTargetSecondMaterial.texture},
+          time: {type: 'f', value: 0.0}
         },
         vertexShader: `
           varying vec2 vUv;
@@ -149,11 +104,11 @@ const greenQuadMaterial = new THREE.ShaderMaterial({
           uniform sampler2D tPrevious;
           uniform sampler2D tPrevious1;
           varying vec2 vUv;
-      
+          uniform float time;
           void main() {
             vec4 color = texture2D(tPrevious, vUv);
             vec4 color2 = texture2D(tPrevious1, vUv);
-            vec3 newCol = mix(color, color2, 0.0).rgb;
+            vec3 newCol = mix(color, color2, time).rgb;
             gl_FragColor = vec4(newCol,1.0);
           }
         `,
@@ -166,7 +121,7 @@ const greenQuadMaterial = new THREE.ShaderMaterial({
     
     }
 
-
+  
     renderMaterials = () => {
       this.renderer.setRenderTarget(this.renderTargetFirstMaterial);
   
@@ -180,6 +135,20 @@ const greenQuadMaterial = new THREE.ShaderMaterial({
       this.renderer.render(this.sceneSecondMaterial, this.cameraSecondScene);
       
       this.renderer.setRenderTarget(null);
+
+      if(this.mesh){
+        this.mesh.material.uniforms['time'].value = this.timeDelta;
+        if(this.timeDelta < 1.0){
+        this.timeDelta += 0.007
+        // console.log(this.timeDelta);
+        }
+        // else
+        // {
+        //   this.timeDelta = 0.0;
+        // }
+      }
+      
+
       this.renderer.render(this.finalScene, this.cameraFirstScene);
 
 

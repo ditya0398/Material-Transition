@@ -50,7 +50,9 @@ class UI extends Layer{
             if(element.name === value){
               Layers.forEach((layer) => {
                 if(layer.name === 'MeshLayer'){
-                  layer.getMesh().material = element;
+                  layer.firstMesh.material  = layer.secondMesh.material;
+                  layer.secondMesh.material =  element;
+                  layer.timeDelta = 0.0;
                 }
               })
             }
