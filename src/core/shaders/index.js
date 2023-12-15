@@ -447,8 +447,11 @@ void main() {
 
 export const vertexShaderCommon = () => {
 return `
+varying vec2 vUv;
+      
 void main() {
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  vUv = uv;
+    gl_Position = vec4(position, 1.0);
 }
 `
 }
@@ -495,7 +498,7 @@ void main() {
     vec2 pos = vec2(st * 15.0);
 
     // Use the noise function
-    float n = noise(pos * time);
+    float n = noise(pos);
 
     gl_FragColor = vec4(vec3(n), 1.0);
 }            `
@@ -506,6 +509,7 @@ return `
 uniform vec2 u_resolution;
 
 uniform float time;
+varying vec2 vUv;
 
 float random (in vec2 st) {
     return fract(sin(dot(st.xy,
@@ -549,11 +553,11 @@ float fbm (in vec2 st) {
 
 void main() {
 
-    vec2 st = gl_FragCoord.xy/u_resolution.xy;
+    vec2 st = vUv;
     st.x *= u_resolution.x/u_resolution.y;
 
     vec3 color = vec3(0.0);
-    color += fbm(st*3.0 * time);
+    color += fbm(st*3.0 * 0.1);
 
     gl_FragColor = vec4(color,1.0);
 }`

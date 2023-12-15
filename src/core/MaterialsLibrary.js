@@ -66,9 +66,9 @@ class MaterialsLibrary
     
                }
             
-           this.createMaterial(true, uniforms, vertexShader, fragmentShader, 'Classic Perlin', MaterialsLibrary.MaterialType.custom); 
-           this.createMaterial(false, uniforms, vertexShaderLava, fragmentShaderLava, 'Lava Noise', MaterialsLibrary.MaterialType.custom); 
-           this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderFire, 'fire noise', MaterialsLibrary.MaterialType.custom);       
+        //    this.createMaterial(true, uniforms, vertexShader, fragmentShader, 'Classic Perlin', MaterialsLibrary.MaterialType.custom); 
+        //    this.createMaterial(false, uniforms, vertexShaderLava, fragmentShaderLava, 'Lava Noise', MaterialsLibrary.MaterialType.custom); 
+        //    this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderFire, 'fire noise', MaterialsLibrary.MaterialType.custom);       
            this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderfBM, 'fBM Noise', MaterialsLibrary.MaterialType.custom);       
            this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderDomainWarp, 'domain warp noise', MaterialsLibrary.MaterialType.custom);  
            this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderClouds, 'Value Noise',MaterialsLibrary.MaterialType.custom);      

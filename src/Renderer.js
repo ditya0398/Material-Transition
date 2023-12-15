@@ -19,20 +19,20 @@ class Renderer{
     /* 
       This method initializes all the layers and adds them into the Layer Stack
     */
-    intializeLayers(){
+    intializeLayers(renderer){
        //adding the camera layer
        PushLayer(new CameraLayer);
        this.camera = Layers[Layers.length - 1].getCamera();
 
        //adding the mesh layer
-       PushLayer(new MeshLayer(this.scene, new THREE.IcosahedronBufferGeometry(3, 7), true));
+       // PushLayer(new MeshLayer(this.scene, new THREE.IcosahedronBufferGeometry(3, 7), true));
 
-       PushLayer(new MeshLayer(this.scene, new THREE.SphereGeometry(5, 30), false));
+       // PushLayer(new MeshLayer(this.scene, new THREE.SphereGeometry(5, 30), false));
        
-       PushLayer(new MeshLayer(this.scene, new THREE.PlaneGeometry(6, 6, 30, 30), false));
+        PushLayer(new MeshLayer(this.scene, new THREE.PlaneGeometry(2, 2), true, renderer));
        
        //adding the UI Layer
-       PushLayer(new UILayer());
+       // PushLayer(new UILayer());
     }
 
     /*
@@ -51,7 +51,7 @@ class Renderer{
           window.addEventListener("resize", this.onWindowResize, false);
       
           this.start = Date.now();
-          this.intializeLayers();
+          this.intializeLayers(this.renderer);
     }
     
     render = () => {
@@ -61,7 +61,7 @@ class Renderer{
           element.onUpdate();
         });
 
-        this.renderer.render(this.scene, this.camera);
+        // this.renderer.render(this.scene, this.camera);
         requestAnimationFrame(this.render);
     };
     
