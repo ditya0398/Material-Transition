@@ -26,8 +26,6 @@ class Renderer{
        this.camera = Layers[Layers.length - 1].getCamera();
 
        //adding the mesh layer
-       // PushLayer(new MeshLayer(this.scene, new THREE.PlaneGeometry(10, 10), true, renderer));
-
         PushLayer(new MeshLayer(this.scene, new THREE.CircleGeometry(6.5,120), true, renderer));
        
         PushLayer(new MeshLayer(this.scene, new THREE.PlaneGeometry(10.8, 10.8), false, renderer));

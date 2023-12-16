@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { ShaderMaterial } from "three";
-import { fragmentShader, fragmentShaderBlueColor, fragmentShaderCellularNoise, fragmentShaderClouds, fragmentShaderDomainWarp, fragmentShaderFire, fragmentShaderLava, fragmentShaderRedColor, fragmentShaderVornoiNoise, fragmentShaderfBM, vertexShader, vertexShaderCommon, vertexShaderLava } from "./shaders";
+import {fragmentShaderBlueColor, fragmentShaderCellularNoise, fragmentShaderClouds, fragmentShaderRedColor, fragmentShaderTexture, fragmentShaderfBM, vertexShaderCommon, vertexShaderFinal } from "./shaders";
+// import image from './webgl.png'
 
 /*
     Material Library contains all the materials
@@ -28,8 +29,29 @@ class MaterialsLibrary
         _name: Name of the material
         type: Type of the material, Please check MaterialsType 
     */
-    createCustomMaterial = (_wireframe, _uniform = null, _vertexShader = null, _fragmentShader = null, _name) => {
-      
+
+    createCustomMaterial = (_wireframe, _uniform = null, _vertexShader = null, _fragmentShader = null, _name, imagePath = null) => {
+       let texture;
+
+        if(imagePath){
+            console.log(imagePath);
+           texture = new THREE.TextureLoader().load(imagePath);
+            console.log(texture);
+                console.log('loaded the image');
+                _uniform['imageTex'].value = texture;
+                console.log(_uniform);
+                const _material = new ShaderMaterial({
+                    wireframe: _wireframe,
+                    name: _name,
+                    uniforms: _uniform,
+                    vertexShader: _vertexShader(),
+                    fragmentShader: _fragmentShader()
+                });
+                MaterialsLibrary.materials.push(_material);
+            
+        }
+        else
+        {
         const _material = new ShaderMaterial({
                 wireframe: _wireframe,
                 name: _name,
@@ -38,6 +60,7 @@ class MaterialsLibrary
                 fragmentShader: _fragmentShader()
             });
             MaterialsLibrary.materials.push(_material);
+        }
        
 }
     createInbuiltMaterial = (material, _name) => {
@@ -49,10 +72,10 @@ class MaterialsLibrary
         initialize all the shader materials
     */
     initializeMaterials = () => {
-            const uniforms =  {
-              time: {
-                type: "f",
-                value: 0.0
+            const textureUniform =  {
+                imageTex: {
+                type: "t",
+                value: null
               }
             }
 
@@ -66,12 +89,17 @@ class MaterialsLibrary
                   }
     
                }
-               
+            
+            
+          
            this.createCustomMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderRedColor, 'Red Color');
            this.createCustomMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderfBM, 'fBM Noise'); 
            this.createCustomMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderBlueColor, 'Blue Color');       
            this.createCustomMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderClouds, 'Value Noise');      
            this.createCustomMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderCellularNoise, 'cellular noise'); 
+           this.createCustomMaterial(false, textureUniform, vertexShaderFinal, fragmentShaderTexture, 'image', './assets/pic.jpg'); 
+          
+         
           
     }
 }

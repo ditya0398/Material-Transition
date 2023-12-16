@@ -142,7 +142,18 @@ void main() {
 }
 
 
+export const fragmentShaderTexture = () => {  return `
+uniform sampler2D imageTex;
 
+varying vec2 vUv;
+uniform float time;
+
+
+void main() {
+  vec4 color = texture2D(imageTex, vUv);
+  gl_FragColor = color;
+}
+`}
 export const fragmentShaderCellularNoise = () => {
 return `
 uniform vec2 u_resolution;

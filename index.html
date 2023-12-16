@@ -1,12 +1,24 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Materials</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+	</head>
+	<body>
 
-<head>
-	<title>three.js - Noise</title>
-	<meta charset="UTF-8" />
-</head>
+		<div id="container"></div>
+		
 
-<body>
-	<script src="./main.js"></script>
-</body>
-
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+		<script type="module" src="/main.js"></script>
+	</body>
 </html>

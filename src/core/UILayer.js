@@ -66,24 +66,25 @@ class UILayer extends Layer{
     addInterpolatorsDropDown = () => {
       console.log(Interpolators.interpolators);
       var parameters = {
-        Interpolator: Interpolators.interpolators[0].name,
+        Interpolator: Interpolators.interpolators[0].material.name,
       };
       var options = [];
 
       Interpolators.interpolators.forEach((element) => {
-        options.push(element.name);
+        options.push(element.material.name);
       });
 
       // Add a dropdown to the GUI
       var interpolatorsDropdown = this.gui.add(parameters, 'Interpolator', options);
       interpolatorsDropdown.onChange(function(value) {
         Interpolators.interpolators.forEach((interpolator) => {
-          if(interpolator.name === value)
+          if(interpolator.material.name === value)
           {
           Layers.forEach((layer) => {
             if(layer.name === 'MeshLayer'){
               if(layer.getVisibility() === true){
-                layer.setMaterial(interpolator);
+                layer.setMaterial(interpolator.material);
+                Interpolators.activeInterPolater = interpolator;
               }
             }
           });

@@ -5,6 +5,7 @@ import MaterialsLibrary from "./MaterialsLibrary";
 import { Layers } from "./LayerStack";
 import { fragmentShaderNoiseInterpolation, fragmentShaderHermitieInterpolation, fragmentShaderLinearInterpolation, vertexShaderCommon, vertexShaderFinal } from "./shaders";
 import UILayer from "./UILayer";
+import Interpolators from "./Interpolator";
 
 class MeshLayer extends Layer{
     mesh = null;
@@ -26,7 +27,7 @@ class MeshLayer extends Layer{
     secondMesh =  null;
 
 
-    constructor(_scene, _meshGeom, _isVisible, _renderer){
+    constructor(_scene, _meshGeom, _isVisible, _renderer, _interPolationDelta){
         super();
         this.setVisibility(_isVisible);
         this.meshGeometry = _meshGeom;
@@ -101,7 +102,8 @@ class MeshLayer extends Layer{
         this.mesh.material.uniforms['time'].value = this.timeDelta;
         this.mesh.material.uniforms['tPrevious'].value = this.renderTargetFirstMaterial.texture;
         this.mesh.material.uniforms['tPrevious1'].value = this.renderTargetSecondMaterial.texture;
-        if(this.timeDelta < 1.0){
+       
+        if(this.timeDelta < Interpolators.activeInterPolater.threshold){
           this.timeDelta += 0.007
         }
       }

@@ -3,12 +3,18 @@ import * as THREE from "three";
 import { ShaderMaterial } from "three";
 class Interpolators{
     static interpolators = [];
+    static activeInterPolater;
+
+    interPolator(_threshold, _material){
+        this.threshold = _threshold,
+        this.material = _material
+    }
     constructor(){
         this.initializeInterpolators();
     }
-    addInterpolator = (_vertexShader, _fragmentShader, _name) => {
+    addInterpolator = (_vertexShader, _fragmentShader, _name, threshold) => {
         
-        const _interpolator = new ShaderMaterial({
+        const _interpolatorMaterial = new ShaderMaterial({
             name: _name,
             uniforms: {
                 tPrevious: {type: 't', value: null},
@@ -18,17 +24,32 @@ class Interpolators{
             vertexShader: _vertexShader(),
             fragmentShader: _fragmentShader()
         });
-    Interpolators.interpolators.push(_interpolator);
+        
+        Interpolators.interpolators.push(new Interpolator(threshold, _interpolatorMaterial));
     }
 
     initializeInterpolators = () => {
-        this.addInterpolator(vertexShaderFinal, fragmentShaderLinearInterpolation, 'Linear');
-        this.addInterpolator(vertexShaderFinal, fragmentShaderNoiseInterpolation, 'Noise');
-        this.addInterpolator(vertexShaderFinal, fragmentShaderSmoothStepInterpolator, 'SmoothStep');
-        this.addInterpolator(vertexShaderFinal, fragmentShaderSmoothStepInterpolator, 'Hermite Spline');
+        this.addInterpolator(vertexShaderFinal, fragmentShaderLinearInterpolation, 'Linear', 1.0);
+        this.addInterpolator(vertexShaderFinal, fragmentShaderNoiseInterpolation, 'Noise', 1.2);
+        this.addInterpolator(vertexShaderFinal, fragmentShaderSmoothStepInterpolator, 'SmoothStep', 1.0);
+        this.addInterpolator(vertexShaderFinal, fragmentShaderSmoothStepInterpolator, 'Hermite Spline', 1.0);
+        const length = Interpolators.interpolators.length;
+        if(length > 0){
+            Interpolators.activeInterPolater = Interpolators.interpolators[0];
+        }
     }
 
 
+}
+
+class Interpolator{
+    threshold;
+    material;
+
+    constructor(_threshold, _material){
+        this.threshold = _threshold;
+        this.material = _material;
+    }
 }
 
 export default Interpolators;
