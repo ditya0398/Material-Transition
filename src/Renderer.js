@@ -26,14 +26,14 @@ class Renderer{
        this.camera = Layers[Layers.length - 1].getCamera();
 
        //adding the mesh layer
-       // PushLayer(new MeshLayer(this.scene, new THREE.IcosahedronBufferGeometry(3, 7), true));
+       // PushLayer(new MeshLayer(this.scene, new THREE.PlaneGeometry(10, 10), true, renderer));
 
-       // PushLayer(new MeshLayer(this.scene, new THREE.SphereGeometry(5, 30), false));
+        PushLayer(new MeshLayer(this.scene, new THREE.CircleGeometry(6.5,120), true, renderer));
        
-        PushLayer(new MeshLayer(this.scene, new THREE.PlaneGeometry(2.8, 2), true, renderer));
+         PushLayer(new MeshLayer(this.scene, new THREE.PlaneGeometry(10.8, 10.8), false, renderer));
        
        //adding the UI Layer
-       PushLayer(new UILayer());
+        PushLayer(new UILayer());
     }
 
     /*
@@ -44,10 +44,11 @@ class Renderer{
           this.renderer = new THREE.WebGLRenderer();
           this.renderer.setPixelRatio(window.devicePixelRatio);
           this.renderer.setSize(window.innerWidth, window.innerHeight);
+          this.renderer.setViewport(0,0, window.innerWidth, window.innerHeight);
 
           new MaterialsLibrary();
           new Interpolators();
-          
+
           document.body.appendChild(this.renderer.domElement);
           document.body.style.cssText = "margin: 0; overflow: hidden";
           window.addEventListener("resize", this.onWindowResize, false);

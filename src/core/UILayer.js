@@ -4,7 +4,7 @@ import MaterialsLibrary from "./MaterialsLibrary";
 import { Layers } from "./LayerStack";
 import Interpolators from "./Interpolator";
 
-class UI extends Layer{
+class UILayer extends Layer{
 
     gui = null;
     name = null;
@@ -22,7 +22,6 @@ class UI extends Layer{
         this.addInterpolatorsDropDown();
     }
 
-    
     onDetach = () => {
 
     }
@@ -43,6 +42,7 @@ class UI extends Layer{
 
       MaterialsLibrary.materials.forEach((element) => {
         options.push(element.name);
+        console.log(element);
       });
 
       // Add a dropdown to the GUI
@@ -92,19 +92,19 @@ class UI extends Layer{
       });
     }
 
-    
+
     addShapesDropDown = () => {
       var parameters = {
-        Geometry: 'IcosahedronBufferGeometry',
+        Geometry: 'PlaneGeometry',
       };
       var options = [];
-
+    
       Layers.forEach((element) => {
         if(element.name === 'MeshLayer'){
           options.push(element.meshGeometry.type);
         }
       });
-
+      parameters['Geometry'] = options[0];
       var geometriesDropDown = this.gui.add(parameters, 'Geometry', options);
 
       geometriesDropDown.onChange(function(value) {
@@ -126,4 +126,4 @@ class UI extends Layer{
 }
 
 
-export default UI;
+export default UILayer;

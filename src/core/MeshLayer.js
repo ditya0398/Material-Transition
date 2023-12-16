@@ -3,7 +3,8 @@ import { IcosahedronGeometry, Mesh, PlaneGeometry } from "three";
 import Layer from "./Layer";
 import MaterialsLibrary from "./MaterialsLibrary";
 import { Layers } from "./LayerStack";
-import { fragmentShaderNoiseInterpolation, fragmentShaderHermitieInterpolation, fragmentShaderLinearInterpolation, vertexShaderCommon } from "./shaders";
+import { fragmentShaderNoiseInterpolation, fragmentShaderHermitieInterpolation, fragmentShaderLinearInterpolation, vertexShaderCommon, vertexShaderFinal } from "./shaders";
+import UILayer from "./UILayer";
 
 class MeshLayer extends Layer{
     mesh = null;
@@ -37,14 +38,14 @@ class MeshLayer extends Layer{
     }
 
     onAttach = () => {
-     
         this.initializeRenderTargets();
         this.initFinalSceneMesh();
         this.start = Date.now();
     }
-  
-    initializeRenderTargets(){
 
+    
+
+    initializeRenderTargets(){
       const geometry = this.meshGeometry;
       this.firstMesh = new Mesh(geometry, MaterialsLibrary.materials[1]);
 
@@ -59,14 +60,14 @@ class MeshLayer extends Layer{
         }
       })
       this.cameraFirstScene = cameraLayer.getCamera();
-      this.renderTargetFirstMaterial = new THREE.WebGLRenderTarget(1024,1024);
+      this.renderTargetFirstMaterial = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
       this.sceneFirstMaterial.add(this.firstMesh);
 
 
       //setup scene for the second scene
       this.sceneSecondMaterial = new THREE.Scene();
       this.cameraSecondScene = cameraLayer.getCamera();
-      this.renderTargetSecondMaterial = new THREE.WebGLRenderTarget(1024,1024);
+      this.renderTargetSecondMaterial = new THREE.WebGLRenderTarget(window.innerWidth,window.innerHeight);
       this.secondMesh = new Mesh(geometry, MaterialsLibrary.materials[0]);
       this.sceneSecondMaterial.add(this.secondMesh);
     }
@@ -78,7 +79,7 @@ class MeshLayer extends Layer{
           tPrevious1: {type: 't', value: null},
           time: {type: 'f', value: 0.0}
         },
-        vertexShader: vertexShaderCommon(),
+        vertexShader: vertexShaderFinal(),
         fragmentShader: fragmentShaderLinearInterpolation(),
       });
       const geometry = this.meshGeometry;
@@ -116,7 +117,7 @@ class MeshLayer extends Layer{
     //     this.updateMeshMaterial();
     //     this.mesh.visible = this.toBeRendered;
     //  }
-
+    this.mesh.visible = this.toBeRendered;
     this.renderMaterials();
     }
 

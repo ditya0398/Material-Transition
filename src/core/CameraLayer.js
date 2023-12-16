@@ -17,7 +17,7 @@ class CameraLayer extends Layer{
             1,
             1000
           );
-          this.camera.position.z = 2;
+          this.camera.position.z = 10;
       
     };
 

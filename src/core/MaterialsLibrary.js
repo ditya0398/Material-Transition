@@ -14,10 +14,7 @@ import { fragmentShader, fragmentShaderBlueColor, fragmentShaderCellularNoise, f
 class MaterialsLibrary 
 {
     static materials = [];
-    static MaterialType = {
-        custom: 'CUSTOM',
-        inbuilt: 'INBUILT'
-    }
+    
     constructor(){
         this.initializeMaterials();
     }
@@ -31,8 +28,8 @@ class MaterialsLibrary
         _name: Name of the material
         type: Type of the material, Please check MaterialsType 
     */
-    createMaterial = (_wireframe, _uniform = null, _vertexShader = null, _fragmentShader = null, _name, type) => {
-        if(type === MaterialsLibrary.MaterialType.custom){
+    createCustomMaterial = (_wireframe, _uniform = null, _vertexShader = null, _fragmentShader = null, _name) => {
+      
         const _material = new ShaderMaterial({
                 wireframe: _wireframe,
                 name: _name,
@@ -41,14 +38,13 @@ class MaterialsLibrary
                 fragmentShader: _fragmentShader()
             });
             MaterialsLibrary.materials.push(_material);
-        }
-        else
-        {
-            const _material = new THREE.MeshBasicMaterial({color: 'cyan'});
-            MaterialsLibrary.materials.push(_material);
-        }
        
 }
+    createInbuiltMaterial = (material, _name) => {
+        material.name = _name;
+        MaterialsLibrary.materials.push(material);
+    }
+
     /* 
         initialize all the shader materials
     */
@@ -74,14 +70,13 @@ class MaterialsLibrary
         //    this.createMaterial(true, uniforms, vertexShader, fragmentShader, 'Classic Perlin', MaterialsLibrary.MaterialType.custom); 
         //    this.createMaterial(false, uniforms, vertexShaderLava, fragmentShaderLava, 'Lava Noise', MaterialsLibrary.MaterialType.custom); 
         //    this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderFire, 'fire noise', MaterialsLibrary.MaterialType.custom);       
-           this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderRedColor, 'Red Color', MaterialsLibrary.MaterialType.custom);
-           this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderfBM, 'fBM Noise', MaterialsLibrary.MaterialType.custom); 
-           this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderBlueColor, 'Blue Color', MaterialsLibrary.MaterialType.custom);      
+           this.createCustomMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderRedColor, 'Red Color');
+           this.createCustomMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderfBM, 'fBM Noise'); 
+           this.createCustomMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderBlueColor, 'Blue Color');      
            // this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderDomainWarp, 'domain warp noise', MaterialsLibrary.MaterialType.custom);  
-           this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderClouds, 'Value Noise',MaterialsLibrary.MaterialType.custom);      
-           this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderCellularNoise, 'cellular noise', MaterialsLibrary.MaterialType.custom); 
-           this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderCellularNoise, 'Yellow', MaterialsLibrary.MaterialType.inbuilt); 
-           
+           this.createCustomMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderClouds, 'Value Noise');      
+           this.createCustomMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderCellularNoise, 'cellular noise'); 
+          
     }
 }
 

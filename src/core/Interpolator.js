@@ -1,4 +1,4 @@
-import { fragmentShaderLinearInterpolation, fragmentShaderNoiseInterpolation, vertexShaderCommon } from "./shaders";
+import { fragmentShaderLinearInterpolation, fragmentShaderNoiseInterpolation, fragmentShaderSmoothStepInterpolator, vertexShaderCommon, vertexShaderFinal } from "./shaders";
 import * as THREE from "three";
 import { ShaderMaterial } from "three";
 class Interpolators{
@@ -22,8 +22,10 @@ class Interpolators{
     }
 
     initializeInterpolators = () => {
-        this.addInterpolator(vertexShaderCommon, fragmentShaderLinearInterpolation, 'Linear');
-        this.addInterpolator(vertexShaderCommon, fragmentShaderNoiseInterpolation, 'Noise');
+        this.addInterpolator(vertexShaderFinal, fragmentShaderLinearInterpolation, 'Linear');
+        this.addInterpolator(vertexShaderFinal, fragmentShaderNoiseInterpolation, 'Noise');
+        this.addInterpolator(vertexShaderFinal, fragmentShaderSmoothStepInterpolator, 'SmoothStep');
+        this.addInterpolator(vertexShaderFinal, fragmentShaderSmoothStepInterpolator, 'Hermite Spline');
     }
 
 
