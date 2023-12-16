@@ -4,7 +4,6 @@ import Layer from "./Layer";
 import MaterialsLibrary from "./MaterialsLibrary";
 import { Layers } from "./LayerStack";
 import { fragmentShaderNoiseInterpolation, fragmentShaderHermitieInterpolation, fragmentShaderLinearInterpolation, vertexShaderCommon, vertexShaderFinal } from "./shaders";
-import UILayer from "./UILayer";
 import Interpolators from "./Interpolator";
 
 class MeshLayer extends Layer{
@@ -95,6 +94,7 @@ class MeshLayer extends Layer{
     }
 
     renderMaterials = () => {
+      if(MaterialsLibrary.materials.length > 1){
       this.renderToRenderTarget(this.renderTargetFirstMaterial, this.cameraFirstScene, this.sceneFirstMaterial);
       this.renderToRenderTarget(this.renderTargetSecondMaterial, this.cameraSecondScene, this.sceneSecondMaterial);
 
@@ -106,6 +106,22 @@ class MeshLayer extends Layer{
         if(this.timeDelta < Interpolators.activeInterPolater.threshold){
           this.timeDelta += 0.007
         }
+      }
+      
+      }
+      if(MaterialsLibrary.materials.length === 1)
+      {
+        this.renderToRenderTarget(this.renderTargetFirstMaterial, this.cameraFirstScene, this.sceneFirstMaterial);
+        this.renderToRenderTarget(this.renderTargetSecondMaterial, this.cameraSecondScene, this.sceneSecondMaterial);
+
+        this.mesh.material.uniforms['time'].value = this.timeDelta;
+        this.mesh.material.uniforms['tPrevious'].value = this.renderTargetFirstMaterial.texture;
+        this.mesh.material.uniforms['tPrevious1'].value = this.renderTargetSecondMaterial.texture;
+
+        if(this.timeDelta < Interpolators.activeInterPolater.threshold){
+          this.timeDelta += 0.007
+        }
+       
       }
       
 
@@ -163,5 +179,6 @@ class MeshLayer extends Layer{
 
 
 }
+
 
 export default MeshLayer;

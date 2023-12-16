@@ -4,7 +4,7 @@ varying vec2 vUv;
       
 void main() {
   vUv = uv;
-    gl_Position = vec4(position, 1.0);
+    gl_Position =  projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
 `
 }
@@ -15,7 +15,7 @@ export const vertexShaderFinal= () => {
         
   void main() {
     vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      gl_Position = vec4(position, 1.0);
   }
   `
   }
@@ -150,6 +150,7 @@ uniform float time;
 
 
 void main() {
+ 
   vec4 color = texture2D(imageTex, vUv);
   gl_FragColor = color;
 }
@@ -355,6 +356,25 @@ vec3 hermiteSplineInterpolation(vec3 color1, vec3 color2, float t) {
       // Perform noise-based interpolation
       vec3 interpolatedColor = hermiteSplineInterpolation(color.rgb, color2.rgb, time);
     
+      gl_FragColor = vec4(interpolatedColor,1.0);
+    }`
+}
+
+
+export const fragmentShaderExponentialInterpolator = () => {
+  return `
+  uniform sampler2D tPrevious;
+  uniform sampler2D tPrevious1;
+  varying vec2 vUv;
+  uniform float time;
+
+    void main() {
+      vec4 color = texture2D(tPrevious, vUv);
+      vec4 color2 = texture2D(tPrevious1, vUv);
+
+      float smoothT = pow(time, 2.0);
+      vec3 interpolatedColor = mix(color.rgb, color2.rgb, smoothT);
+      
       gl_FragColor = vec4(interpolatedColor,1.0);
     }`
 }

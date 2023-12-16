@@ -5,15 +5,31 @@ import MeshLayer from "./core/MeshLayer";
 import UILayer from "./core/UILayer";
 import MaterialsLibrary from "./core/MaterialsLibrary";
 import Interpolators from "./core/Interpolator";
+import SceneLayer from "./SceneLayer";
 
 
 class Renderer{
     scene = null;
-    camera = null;
+  
 
     constructor(){
         //initialize the renderer
-        this.initialize();
+        this.renderer = new THREE.WebGLRenderer();
+        this.renderer.setPixelRatio(window.devicePixelRatio);
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setViewport(0,0, window.innerWidth, window.innerHeight);
+
+        new MaterialsLibrary();
+        new Interpolators();
+
+        document.body.appendChild(this.renderer.domElement);
+        document.body.style.cssText = "margin: 0; overflow: hidden";
+        window.addEventListener("resize", this.onWindowResize, false);
+        this.start = Date.now();
+
+
+        this.intializeLayers(this.renderer);
+          
         this.render();
     }
 
@@ -21,39 +37,23 @@ class Renderer{
       This method initializes all the layers and adds them into the Layer Stack
     */
     intializeLayers(renderer){
-       //adding the camera layer
-       PushLayer(new CameraLayer);
-       this.camera = Layers[Layers.length - 1].getCamera();
+       // pushing the scene as a layer
+       PushLayer(new SceneLayer());
+       this.scene = Layers[0].scene;
 
+       //adding the camera layer
+        PushLayer(new CameraLayer());
+      
        //adding the mesh layer
-        PushLayer(new MeshLayer(this.scene, new THREE.CircleGeometry(6.5,120), true, renderer));
-       
-        PushLayer(new MeshLayer(this.scene, new THREE.PlaneGeometry(10.8, 10.8), false, renderer));
+        PushLayer(new MeshLayer(this.scene, new THREE.CircleGeometry(2,120), true, renderer));
+
+        PushLayer(new MeshLayer(this.scene, new THREE.PlaneGeometry(4, 4), false, renderer));
        
        //adding the UI Layer
         PushLayer(new UILayer());
     }
 
-    /*
-      Initializes the Renderer
-    */
-    initialize = () =>{
-          this.scene = new THREE.Scene();
-          this.renderer = new THREE.WebGLRenderer();
-          this.renderer.setPixelRatio(window.devicePixelRatio);
-          this.renderer.setSize(window.innerWidth, window.innerHeight);
-          this.renderer.setViewport(0,0, window.innerWidth, window.innerHeight);
-
-          new MaterialsLibrary();
-          new Interpolators();
-
-          document.body.appendChild(this.renderer.domElement);
-          document.body.style.cssText = "margin: 0; overflow: hidden";
-          window.addEventListener("resize", this.onWindowResize, false);
-      
-          this.start = Date.now();
-          this.intializeLayers(this.renderer);
-    }
+   
     
     render = () => {
      

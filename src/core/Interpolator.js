@@ -1,4 +1,4 @@
-import { fragmentShaderLinearInterpolation, fragmentShaderNoiseInterpolation, fragmentShaderSmoothStepInterpolator, vertexShaderCommon, vertexShaderFinal } from "./shaders";
+import { fragmentShaderLinearInterpolation, fragmentShaderNoiseInterpolation, fragmentShaderExponentialInterpolator, fragmentShaderSmoothStepInterpolator, vertexShaderCommon, vertexShaderFinal } from "./shaders";
 import * as THREE from "three";
 import { ShaderMaterial } from "three";
 class Interpolators{
@@ -10,7 +10,17 @@ class Interpolators{
         this.material = _material
     }
     constructor(){
-        this.initializeInterpolators();
+        this.addInterpolator(vertexShaderFinal, fragmentShaderLinearInterpolation, 'Linear', 1.0);
+        this.addInterpolator(vertexShaderFinal, fragmentShaderNoiseInterpolation, 'Noise', 1.2);
+        this.addInterpolator(vertexShaderFinal, fragmentShaderSmoothStepInterpolator, 'SmoothStep', 1.0);
+        this.addInterpolator(vertexShaderFinal, fragmentShaderSmoothStepInterpolator, 'Hermite Spline', 1.0);
+        this.addInterpolator(vertexShaderFinal, fragmentShaderExponentialInterpolator, 'Exponential', 1.0);
+
+
+        const length = Interpolators.interpolators.length;
+        if(length > 0){
+            Interpolators.activeInterPolater = Interpolators.interpolators[0];
+        }
     }
     addInterpolator = (_vertexShader, _fragmentShader, _name, threshold) => {
         
@@ -27,19 +37,6 @@ class Interpolators{
         
         Interpolators.interpolators.push(new Interpolator(threshold, _interpolatorMaterial));
     }
-
-    initializeInterpolators = () => {
-        this.addInterpolator(vertexShaderFinal, fragmentShaderLinearInterpolation, 'Linear', 1.0);
-        this.addInterpolator(vertexShaderFinal, fragmentShaderNoiseInterpolation, 'Noise', 1.2);
-        this.addInterpolator(vertexShaderFinal, fragmentShaderSmoothStepInterpolator, 'SmoothStep', 1.0);
-        this.addInterpolator(vertexShaderFinal, fragmentShaderSmoothStepInterpolator, 'Hermite Spline', 1.0);
-        const length = Interpolators.interpolators.length;
-        if(length > 0){
-            Interpolators.activeInterPolater = Interpolators.interpolators[0];
-        }
-    }
-
-
 }
 
 class Interpolator{

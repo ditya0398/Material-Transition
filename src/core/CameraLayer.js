@@ -12,21 +12,18 @@ class CameraLayer extends Layer{
 
     onAttach = () => {
         this.camera = new THREE.PerspectiveCamera(
-            70,
+            45,
             window.innerWidth / window.innerHeight,
-            1,
+            0.1,
             1000
           );
           this.camera.position.z = 10;
-      
     };
 
     onDetach = () => {
-
     };
 
     onUpdate = () => {
-        
     }
     
     getCamera(){
