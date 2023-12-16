@@ -4,32 +4,31 @@ import CameraLayer from "./core/CameraLayer";
 import MeshLayer from "./core/MeshLayer";
 import UILayer from "./core/UILayer";
 import MaterialsLibrary from "./core/MaterialsLibrary";
-import Interpolators from "./core/Interpolator";
+import Interpolators from "./core/utils/Interpolators";
 import SceneLayer from "./SceneLayer";
+import Environment from "./Environment";
+import onWindowResize from "./Utils";
 
 
 class Renderer{
     scene = null;
-  
+    environment = null;
 
     constructor(){
-        //initialize the renderer
-        this.renderer = new THREE.WebGLRenderer();
-        this.renderer.setPixelRatio(window.devicePixelRatio);
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setViewport(0,0, window.innerWidth, window.innerHeight);
+        this.environment = new Environment();
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setViewport(0,0, window.innerWidth, window.innerHeight);
 
-        new MaterialsLibrary();
+     
         new Interpolators();
 
-        document.body.appendChild(this.renderer.domElement);
+        document.body.appendChild(renderer.domElement);
         document.body.style.cssText = "margin: 0; overflow: hidden";
-        window.addEventListener("resize", this.onWindowResize, false);
-        this.start = Date.now();
-
-
-        this.intializeLayers(this.renderer);
-          
+        window.addEventListener("resize", onWindowResize(this.environment.camera, renderer), false);
+       
+        this.intializeLayers(renderer);
         this.render();
     }
 
@@ -37,19 +36,18 @@ class Renderer{
       This method initializes all the layers and adds them into the Layer Stack
     */
     intializeLayers(renderer){
-       // pushing the scene as a layer
-       PushLayer(new SceneLayer());
-       this.scene = Layers[0].scene;
+        // pushing the scene as a layer
+        PushLayer(new SceneLayer(this.environment));
 
-       //adding the camera layer
+        //adding the camera layer
         PushLayer(new CameraLayer());
       
-       //adding the mesh layer
-        PushLayer(new MeshLayer(this.scene, new THREE.CircleGeometry(2,120), true, renderer));
+        //adding the mesh layer
+        PushLayer(new MeshLayer(this.environment.scene, new THREE.CircleGeometry(2,120), true, renderer));
 
-        PushLayer(new MeshLayer(this.scene, new THREE.PlaneGeometry(4, 4), false, renderer));
+        PushLayer(new MeshLayer(this.environment.scene, new THREE.PlaneGeometry(4, 4), false, renderer));
        
-       //adding the UI Layer
+        //adding the UI Layer
         PushLayer(new UILayer());
     }
 
@@ -62,15 +60,9 @@ class Renderer{
           element.onUpdate();
         });
 
-        // this.renderer.render(this.scene, this.camera);
         requestAnimationFrame(this.render);
     };
-    
-  onWindowResize = () => {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-  };
+
 }
 
 export default Renderer;

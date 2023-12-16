@@ -1,6 +1,7 @@
-import { fragmentShaderLinearInterpolation, fragmentShaderNoiseInterpolation, fragmentShaderExponentialInterpolator, fragmentShaderSmoothStepInterpolator, vertexShaderCommon, vertexShaderFinal } from "./shaders";
-import * as THREE from "three";
+import { fragmentShaderLinearInterpolation, fragmentShaderNoiseInterpolation, fragmentShaderExponentialInterpolator, fragmentShaderSmoothStepInterpolator, vertexShaderCommon, vertexShaderFinal } from "../shaders";
 import { ShaderMaterial } from "three";
+import Interpolator from "./Interpolator";
+
 class Interpolators{
     static interpolators = [];
     static activeInterPolater;
@@ -15,13 +16,14 @@ class Interpolators{
         this.addInterpolator(vertexShaderFinal, fragmentShaderSmoothStepInterpolator, 'SmoothStep', 1.0);
         this.addInterpolator(vertexShaderFinal, fragmentShaderSmoothStepInterpolator, 'Hermite Spline', 1.0);
         this.addInterpolator(vertexShaderFinal, fragmentShaderExponentialInterpolator, 'Exponential', 1.0);
-
+        
 
         const length = Interpolators.interpolators.length;
         if(length > 0){
             Interpolators.activeInterPolater = Interpolators.interpolators[0];
         }
     }
+    
     addInterpolator = (_vertexShader, _fragmentShader, _name, threshold) => {
         
         const _interpolatorMaterial = new ShaderMaterial({
@@ -39,14 +41,6 @@ class Interpolators{
     }
 }
 
-class Interpolator{
-    threshold;
-    material;
 
-    constructor(_threshold, _material){
-        this.threshold = _threshold;
-        this.material = _material;
-    }
-}
 
 export default Interpolators;

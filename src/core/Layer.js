@@ -1,4 +1,6 @@
 
+// Would have preferred Interfaces, since javascript does not supports interface, making a class
+//Interfaces don't have constructors
 class Layer{
 
     /* 
@@ -12,15 +14,15 @@ class Layer{
    
     constructor() { null };
 
-    onAttach= () =>{
+    onAttach = () =>{
         console.log('onAttach of Layer');
     }
 
-    onDetach= () =>{
+    onDetach = () =>{
         console.log('onDettach of Layer');
     }
 
-    onUpdate= () =>{
+    onUpdate = () =>{
         console.log('onUpdate of Layer');
     }
     

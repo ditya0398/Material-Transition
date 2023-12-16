@@ -2,7 +2,7 @@ import { GUI } from "dat.gui";
 import Layer from "./Layer";
 import MaterialsLibrary from "./MaterialsLibrary";
 import { Layers } from "./LayerStack";
-import Interpolators from "./Interpolator";
+import Interpolators from "./utils/Interpolators";
 
 class UILayer extends Layer{
 

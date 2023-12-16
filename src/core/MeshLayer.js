@@ -4,7 +4,7 @@ import Layer from "./Layer";
 import MaterialsLibrary from "./MaterialsLibrary";
 import { Layers } from "./LayerStack";
 import { fragmentShaderNoiseInterpolation, fragmentShaderHermitieInterpolation, fragmentShaderLinearInterpolation, vertexShaderCommon, vertexShaderFinal } from "./shaders";
-import Interpolators from "./Interpolator";
+import Interpolators from "./utils/Interpolators";
 
 class MeshLayer extends Layer{
     mesh = null;

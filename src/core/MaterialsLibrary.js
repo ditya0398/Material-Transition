@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import { ShaderMaterial } from "three";
 import {fragmentShaderBlueColor, fragmentShaderCellularNoise, fragmentShaderClouds, fragmentShaderRedColor, fragmentShaderTexture, fragmentShaderfBM, vertexShaderCommon, vertexShaderFinal } from "./shaders";
-// import image from './webgl.png'
 
 /*
     Material Library contains all the materials
@@ -46,19 +45,6 @@ class MaterialsLibrary
 
 class Material {
     constructor(_wireframe, _uniform = null, _vertexShader = null, _fragmentShader = null, _name, imagePath = null){
-        this.createMaterial(_wireframe, _uniform, _vertexShader, _fragmentShader, _name, imagePath);
-    }
-
-    /* 
-        Creates a new Shader Material
-        _wireframe: to set the wireframe mode on
-        _uniform: uniforms for the shader material
-        _vertexShader: Vertex Shader Source
-        _fragmentShader: Fragment Shader Source
-        _name: Name of the material
-        type: Type of the material, Please check MaterialsType 
-    */
-    createMaterial = (_wireframe, _uniform = null, _vertexShader = null, _fragmentShader = null, _name, imagePath = null) => {
         let texture;
  
          if(imagePath){
@@ -89,7 +75,10 @@ class Material {
              });
              MaterialsLibrary.materials.push(_material);
          }
-}
+    }
+
+   
+    
 }
 
 export default MaterialsLibrary;

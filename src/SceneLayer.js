@@ -6,13 +6,13 @@ class SceneLayer extends Layer
     scene = null;
     name = null;
 
-    constructor(){
+    constructor(_common){
         super();
-        this.scene = new THREE.Scene();
+        this.scene = _common.scene;
         this.setName('Scenelayer');
     }
 
-    getScenet(){
+    getScene(){
         return this.scene;
     }
     onAttach = () => {
