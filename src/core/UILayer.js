@@ -2,6 +2,7 @@ import { GUI } from "dat.gui";
 import Layer from "./Layer";
 import MaterialsLibrary from "./MaterialsLibrary";
 import { Layers } from "./LayerStack";
+import Interpolators from "./Interpolator";
 
 class UI extends Layer{
 
@@ -18,6 +19,7 @@ class UI extends Layer{
         this.gui = new GUI();
         this.addMaterialsDropDown();
         this.addShapesDropDown();
+        this.addInterpolatorsDropDown();
     }
 
     
@@ -61,6 +63,36 @@ class UI extends Layer{
       });
     }
 
+    addInterpolatorsDropDown = () => {
+      console.log(Interpolators.interpolators);
+      var parameters = {
+        Interpolator: Interpolators.interpolators[0].name,
+      };
+      var options = [];
+
+      Interpolators.interpolators.forEach((element) => {
+        options.push(element.name);
+      });
+
+      // Add a dropdown to the GUI
+      var interpolatorsDropdown = this.gui.add(parameters, 'Interpolator', options);
+      interpolatorsDropdown.onChange(function(value) {
+        Interpolators.interpolators.forEach((interpolator) => {
+          if(interpolator.name === value)
+          {
+          Layers.forEach((layer) => {
+            if(layer.name === 'MeshLayer'){
+              if(layer.getVisibility() === true){
+                layer.getMesh().material = interpolator;
+              }
+            }
+          });
+        }    
+        });
+      });
+    }
+
+    
     addShapesDropDown = () => {
       var parameters = {
         Geometry: 'IcosahedronBufferGeometry',

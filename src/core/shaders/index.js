@@ -4,7 +4,7 @@ varying vec2 vUv;
       
 void main() {
   vUv = uv;
-    gl_Position = vec4(position, 1.0);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
 `
 }
@@ -416,3 +416,94 @@ void main() {
 }
 `
 }
+
+export const fragmentShaderHermitieInterpolation = () => {  return `
+uniform sampler2D tPrevious;
+uniform sampler2D tPrevious1;
+varying vec2 vUv;
+uniform float time;
+
+vec3 hermiteInterpolation(vec3 color1, vec3 color2, float t) {
+  float t2 = t * t;
+  float t3 = t2 * t;
+
+  // Hermite interpolation formula
+  float h1 = 2.0 * t3 - 3.0 * t2 + 1.0;
+  float h2 = -2.0 * t3 + 3.0 * t2;
+  float h3 = t3 - 2.0 * t2 + t;
+  float h4 = t3 - t2;
+
+  // Interpolate each component separately
+  vec3 result = color1 * h1 + color2 * h2 + (color1 - color2) * h3 + (color2 - color1) * h4;
+
+  return result;
+}
+void main() {
+  vec4 color = texture2D(tPrevious, vUv);
+  vec4 color2 = texture2D(tPrevious1, vUv);
+  // vec3 newCol = mix(color, color2, time).rgb;
+  vec3 newCol = hermiteInterpolation(color.rgb, color2.rgb, time);
+
+  gl_FragColor = vec4(newCol,1.0);
+}
+`}
+
+export const fragmentShaderLinearInterpolation = () => {  return `
+uniform sampler2D tPrevious;
+uniform sampler2D tPrevious1;
+varying vec2 vUv;
+uniform float time;
+
+
+void main() {
+  vec4 color = texture2D(tPrevious, vUv);
+  vec4 color2 = texture2D(tPrevious1, vUv);
+  vec3 newCol = mix(color, color2, time).rgb;
+  
+  gl_FragColor = vec4(newCol,1.0);
+}
+`}
+
+
+export const fragmentShaderNoiseInterpolation = () => {  return `
+uniform sampler2D tPrevious;
+uniform sampler2D tPrevious1;
+varying vec2 vUv;
+uniform float time;
+
+// Perlin noise function
+float perlinNoise(float x) {
+  return fract(sin(x * 12.9898) * 43758.5453);
+}
+
+// Custom noise-based color interpolation function
+vec3 colorNoiseInterpolator(vec3 color1, vec3 color2, float t) {
+  // Use Perlin noise for smooth interpolation
+  float noise = perlinNoise(t);
+
+  // Use smoothstep function for smoother transitions
+  float smoothT = smoothstep(0.0, 1.0, t);
+
+  // Interpolate each color component separately
+  vec3 result = mix(color1, color2, mix(smoothT, noise, 0.5));
+
+  return result;
+}
+
+
+
+
+void main() {
+
+  
+  vec4 color = texture2D(tPrevious, vUv);
+  vec4 color2 = texture2D(tPrevious1, vUv);
+
+  // Perform noise-based interpolation
+  vec3 interpolatedColor = colorNoiseInterpolator(color.rgb, color2.rgb, time);
+
+  gl_FragColor = vec4(interpolatedColor,1.0);
+}
+`}
+
+

@@ -4,6 +4,7 @@ import CameraLayer from "./core/CameraLayer";
 import MeshLayer from "./core/MeshLayer";
 import UILayer from "./core/UILayer";
 import MaterialsLibrary from "./core/MaterialsLibrary";
+import Interpolators from "./core/Interpolator";
 
 
 class Renderer{
@@ -29,7 +30,7 @@ class Renderer{
 
        // PushLayer(new MeshLayer(this.scene, new THREE.SphereGeometry(5, 30), false));
        
-        PushLayer(new MeshLayer(this.scene, new THREE.PlaneGeometry(2, 2), true, renderer));
+        PushLayer(new MeshLayer(this.scene, new THREE.PlaneGeometry(2.8, 2), true, renderer));
        
        //adding the UI Layer
        PushLayer(new UILayer());
@@ -45,7 +46,8 @@ class Renderer{
           this.renderer.setSize(window.innerWidth, window.innerHeight);
 
           new MaterialsLibrary();
-
+          new Interpolators();
+          
           document.body.appendChild(this.renderer.domElement);
           document.body.style.cssText = "margin: 0; overflow: hidden";
           window.addEventListener("resize", this.onWindowResize, false);

@@ -42,6 +42,11 @@ class MaterialsLibrary
             });
             MaterialsLibrary.materials.push(_material);
         }
+        else
+        {
+            const _material = new THREE.MeshBasicMaterial({color: 'cyan'});
+            MaterialsLibrary.materials.push(_material);
+        }
        
 }
     /* 
@@ -75,6 +80,7 @@ class MaterialsLibrary
            // this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderDomainWarp, 'domain warp noise', MaterialsLibrary.MaterialType.custom);  
            this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderClouds, 'Value Noise',MaterialsLibrary.MaterialType.custom);      
            this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderCellularNoise, 'cellular noise', MaterialsLibrary.MaterialType.custom); 
+           this.createMaterial(false, cloudUniforms, vertexShaderCommon, fragmentShaderCellularNoise, 'Yellow', MaterialsLibrary.MaterialType.inbuilt); 
            
     }
 }
