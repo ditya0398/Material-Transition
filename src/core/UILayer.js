@@ -54,7 +54,7 @@ class UILayer extends Layer{
                 if(layer.name === 'MeshLayer'){
                   layer.firstMesh.material  = layer.secondMesh.material;
                   layer.secondMesh.material =  element;
-                  layer.timeDelta = 0.0;
+                  layer.resetTimeDelta();
                 }
               })
             }
@@ -83,7 +83,7 @@ class UILayer extends Layer{
           Layers.forEach((layer) => {
             if(layer.name === 'MeshLayer'){
               if(layer.getVisibility() === true){
-                layer.getMesh().material = interpolator;
+                layer.setMaterial(interpolator);
               }
             }
           });
@@ -91,8 +91,7 @@ class UILayer extends Layer{
         });
       });
     }
-
-
+    
     addShapesDropDown = () => {
       var parameters = {
         Geometry: 'PlaneGeometry',

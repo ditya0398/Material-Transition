@@ -30,7 +30,7 @@ class Renderer{
 
         PushLayer(new MeshLayer(this.scene, new THREE.CircleGeometry(6.5,120), true, renderer));
        
-         PushLayer(new MeshLayer(this.scene, new THREE.PlaneGeometry(10.8, 10.8), false, renderer));
+        PushLayer(new MeshLayer(this.scene, new THREE.PlaneGeometry(10.8, 10.8), false, renderer));
        
        //adding the UI Layer
         PushLayer(new UILayer());

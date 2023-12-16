@@ -43,8 +43,6 @@ class MeshLayer extends Layer{
         this.start = Date.now();
     }
 
-    
-
     initializeRenderTargets(){
       const geometry = this.meshGeometry;
       this.firstMesh = new Mesh(geometry, MaterialsLibrary.materials[1]);
@@ -113,18 +111,35 @@ class MeshLayer extends Layer{
     }
 
     onUpdate = () => {
-    //  if(this.mesh){
-    //     this.updateMeshMaterial();
-    //     this.mesh.visible = this.toBeRendered;
-    //  }
-    this.mesh.visible = this.toBeRendered;
-    this.renderMaterials();
+      if(this.mesh){
+        this.mesh.visible = this.toBeRendered;
+        if(this.mesh.visible === true){
+          this.renderMaterials();
+        }
+      }
     }
 
     setMesh = (_mesh) => {
       this.mesh = _mesh;
     }
 
+    setFirstMeshMaterial = (_material) => {
+      this.firstMesh.material = _material;
+    }
+
+    setSecondMeshMaterial = (_material) => {
+      this.secondMesh.material = _material;
+    }
+
+    resetTimeDelta = () => {
+      this.timeDelta = 0.0;
+    }
+
+    setMaterial = (_material) => {
+      if(this.mesh){
+        this.mesh.material  = _material;
+      }
+    }
     // Sets the visibility of the mesh 
     setVisibility = (_isVisible) => {
       this.toBeRendered = _isVisible;
@@ -138,23 +153,12 @@ class MeshLayer extends Layer{
     getMesh = () => {
         return this.mesh;
     }    
-
+    
     //sets the name of the layer
     setName = (_name) => {
       this.name = _name;
     }
 
-    // updates the material of the mesh
-    updateMeshMaterial = () => {
-      
-      MaterialsLibrary.materials.forEach((material) => {
-          if(material.name  === this.mesh.material.name){
-                  material.uniforms["time"].value =
-                  0.0001 * (Date.now() - this.start);   
-          }
-      });
-     
-    };
 
 }
 
