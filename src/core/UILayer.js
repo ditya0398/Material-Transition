@@ -3,7 +3,7 @@ import Layer from "./Layer";
 import MaterialsLibrary from "./MaterialsLibrary";
 import { Layers } from "./LayerStack";
 import Interpolators from "./utils/Interpolators";
-import ControlPanel from "./ControlPanel";
+import ControlPanelController from "./ControlPanelController";
 
 class UILayer extends Layer{
 
@@ -18,7 +18,7 @@ class UILayer extends Layer{
 
     onAttach = () => {
         this.gui = new GUI();
-        const controlPanel = new ControlPanel(this.gui);
+        const controlPanel = new ControlPanelController(this.gui);
         controlPanel.addMaterialsDropDown();
         controlPanel.addShapesDropDown();
         controlPanel.addInterpolatorsDropDown();

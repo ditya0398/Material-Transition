@@ -2,12 +2,12 @@ import { Layers } from "./LayerStack";
 import MaterialsLibrary from "./MaterialsLibrary";
 import Interpolators from "./utils/Interpolators";
 
-class ControlPanel{
+//communicator between the UI and the components
+class ControlPanelController{
     gui = null;
     constructor(_gui){
         this.gui = _gui;
     }
-
 
     addInterpolatorsDropDown = () => {
        
@@ -30,7 +30,7 @@ class ControlPanel{
             Layers.forEach((layer) => {
               if(layer.name === 'MeshLayer'){
                 if(layer.getVisibility() === true){
-                  layer.setMaterial(interpolator.material);
+                  layer.meshController.setMaterial(interpolator.material);
                   Interpolators.activeInterPolater = interpolator;
                 }
               }
@@ -56,9 +56,9 @@ class ControlPanel{
               if(element.name === value){
                 Layers.forEach((layer) => {
                   if(layer.name === 'MeshLayer'){
-                    layer.firstMesh.material  = layer.secondMesh.material;
-                    layer.secondMesh.material =  element;
-                    layer.resetTimeDelta();
+                    layer.meshController.RenderTargetComponents[0].mesh.material  =  layer.meshController.RenderTargetComponents[1].mesh.material;
+                    layer.meshController.RenderTargetComponents[1].mesh.material =  element;
+                    layer.meshController.resetTimeDelta();
                   }
                 })
               }
@@ -74,7 +74,7 @@ class ControlPanel{
       
         Layers.forEach((element) => {
           if(element.name === 'MeshLayer'){
-            options.push(element.meshGeometry.type);
+            options.push(element.meshController.meshGeometry.type);
           }
         });
         parameters['Geometry'] = options[0];
@@ -83,7 +83,7 @@ class ControlPanel{
         geometriesDropDown.onChange(function(value) {
           Layers.forEach((layer) => {
             if(layer.name === 'MeshLayer'){
-              if(layer.meshGeometry.type === value)
+              if(layer.meshController.meshGeometry.type === value)
               {
                 layer.setVisibility(true);
               }
@@ -98,4 +98,4 @@ class ControlPanel{
       }
 }
 
-export default ControlPanel;
+export default ControlPanelController;

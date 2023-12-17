@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { Layers, PushLayer } from "./core/LayerStack";
 import CameraLayer from "./core/CameraLayer";
-import MeshLayer from "./core/MeshLayer";
+import MeshLayerUI from "./core/MeshLayer";
 import UILayer from "./core/UILayer";
 import MaterialsLibrary from "./core/MaterialsLibrary";
 import Interpolators from "./core/utils/Interpolators";
@@ -43,9 +43,9 @@ class Renderer{
         PushLayer(new CameraLayer());
       
         //adding the mesh layer
-        PushLayer(new MeshLayer(this.environment.scene, new THREE.CircleGeometry(2,120), true, renderer));
+        PushLayer(new MeshLayerUI(this.environment, new THREE.CircleGeometry(2,120), true, renderer));
 
-        PushLayer(new MeshLayer(this.environment.scene, new THREE.PlaneGeometry(4, 4), false, renderer));
+        PushLayer(new MeshLayerUI(this.environment, new THREE.PlaneGeometry(4, 4), false, renderer));
        
         //adding the UI Layer
         PushLayer(new UILayer());
