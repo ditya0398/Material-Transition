@@ -73,7 +73,7 @@ class MeshController
         this.renderer.setRenderTarget(null);
       }
   
-      renderMaterials = () => {
+    renderMaterials = () => {
         if(MaterialsLibrary.materials.length > 0){
           this.renderToRenderTarget(this.renderTarget.renderTargets[0] ,this.environment.camera,  this.RenderTargetComponents[0].scene);
           this.renderToRenderTarget(this.renderTarget.renderTargets[1] ,this.environment.camera, this.RenderTargetComponents[1].scene);
@@ -91,6 +91,7 @@ class MeshController
         }
         this.renderer.render(this.environment.scene, this.environment.camera);
       }
+      
        // returs the specific mesh from the respective mesh layer
     getMesh = () => {
         return this.mesh;
