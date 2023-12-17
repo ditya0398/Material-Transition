@@ -1,10 +1,11 @@
 
 import * as THREE from "three";
-import { IcosahedronGeometry, Mesh, PlaneGeometry } from "three";
-import MaterialsLibrary from "./MaterialsLibrary";
-import RenderTarget from "./RenderTarget";
-import { vertexShaderFinal, fragmentShaderLinearInterpolation } from "./shaders";
-import Interpolators from "./utils/Interpolators";
+import { Mesh } from "three";
+import MaterialsLibrary from "../utils/MaterialsLibrary";
+import RenderTarget from "../models/RenderTarget";
+import { vertexShaderFinal, fragmentShaderLinearInterpolation } from "../shaders";
+import Interpolators from "../utils/Interpolators";
+import MeshProps from "../models/MeshProps";
 
 class MeshController
 {
@@ -73,37 +74,21 @@ class MeshController
       }
   
       renderMaterials = () => {
-        if(MaterialsLibrary.materials.length > 1){
-        this.renderToRenderTarget(this.renderTarget.renderTargets[0] ,this.environment.camera,  this.RenderTargetComponents[0].scene);
-        this.renderToRenderTarget(this.renderTarget.renderTargets[1] ,this.environment.camera, this.RenderTargetComponents[1].scene);
+        if(MaterialsLibrary.materials.length > 0){
+          this.renderToRenderTarget(this.renderTarget.renderTargets[0] ,this.environment.camera,  this.RenderTargetComponents[0].scene);
+          this.renderToRenderTarget(this.renderTarget.renderTargets[1] ,this.environment.camera, this.RenderTargetComponents[1].scene);
 
-        if(this.mesh){
-          this.mesh.material.uniforms['time'].value = this.timeDelta;
-          this.mesh.material.uniforms['tPrevious'].value = this.renderTarget.renderTargets[0].texture;
-          this.mesh.material.uniforms['tPrevious1'].value = this.renderTarget.renderTargets[1].texture;
-         
-          if(this.timeDelta < Interpolators.activeInterPolater.threshold){
-            this.timeDelta += 0.007
-          }
+          if(this.mesh){
+            this.mesh.material.uniforms['time'].value = this.timeDelta;
+            this.mesh.material.uniforms['tPrevious'].value = this.renderTarget.renderTargets[0].texture;
+            this.mesh.material.uniforms['tPrevious1'].value = this.renderTarget.renderTargets[1].texture;
+          
+            if(this.timeDelta < Interpolators.activeInterPolater.threshold){
+              this.timeDelta += 0.007
+            }
         }
         
         }
-        // if(MaterialsLibrary.materials.length === 1)
-        // {
-        //     this.renderToRenderTarget(this.renderTargets[0] ,this.environment.camera,  this.RenderTargetComponents[0].scene);
-        //     this.renderToRenderTarget(this.renderTargets[1] ,this.environment.camera, this.RenderTargetComponents[1].scene);
-    
-        //   this.mesh.material.uniforms['time'].value = this.timeDelta;
-        //   this.mesh.material.uniforms['tPrevious'].value = this.renderTargets[0].texture;
-        //   this.mesh.material.uniforms['tPrevious1'].value = this.renderTargets[1].texture;
-  
-        //   if(this.timeDelta < Interpolators.activeInterPolater.threshold){
-        //     this.timeDelta += 0.007
-        //   }
-         
-        // }
-        
-  
         this.renderer.render(this.environment.scene, this.environment.camera);
       }
        // returs the specific mesh from the respective mesh layer
@@ -115,16 +100,6 @@ class MeshController
           this.mesh.material  = _material;
         }
       }
-}
-
-class MeshProps{
-    scene = null;
-    mesh = null;
-    constructor(_material, _geometry){
-        this.scene  = new THREE.Scene();
-        this.mesh =  new Mesh(_geometry, _material);
-        this.scene.add(this.mesh);
-        }
 }
 
 export default MeshController;

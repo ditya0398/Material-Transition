@@ -1,5 +1,4 @@
-import * as THREE from "three";
-import Layer from "./core/Layer";
+import Layer from "../Layer";
 
 class SceneLayer extends Layer
 {   

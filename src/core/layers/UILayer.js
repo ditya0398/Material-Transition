@@ -1,9 +1,9 @@
 import { GUI } from "dat.gui";
-import Layer from "./Layer";
-import MaterialsLibrary from "./MaterialsLibrary";
-import { Layers } from "./LayerStack";
-import Interpolators from "./utils/Interpolators";
-import ControlPanelController from "./ControlPanelController";
+import Layer from "../Layer";
+import MaterialsLibrary from "../utils/MaterialsLibrary";
+import { Layers } from "../LayerStack";
+import Interpolators from "../utils/Interpolators";
+import ControlPanelController from "../controllers/ControlPanelController";
 
 class UILayer extends Layer{
 

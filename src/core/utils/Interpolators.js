@@ -1,4 +1,4 @@
-import { fragmentShaderLinearInterpolation, fragmentShaderNoiseInterpolation, fragmentShaderExponentialInterpolator, fragmentShaderSmoothStepInterpolator, vertexShaderCommon, vertexShaderFinal } from "../shaders";
+import { fragmentShaderLinearInterpolation, fragmentShaderNoiseInterpolation, fragmentShaderExponentialInterpolator, fragmentShaderSmoothStepInterpolator, vertexShaderCommon, vertexShaderFinal, fragmentShader3DCubic } from "../shaders";
 import { ShaderMaterial } from "three";
 import Interpolator from "./Interpolator";
 
@@ -9,11 +9,11 @@ class Interpolators{
     constructor(){
 
         this.addInterpolator(vertexShaderFinal, fragmentShaderLinearInterpolation, 'Linear', 1.0);
-        this.addInterpolator(vertexShaderFinal, fragmentShaderNoiseInterpolation, 'Noise', 1.2);
-        this.addInterpolator(vertexShaderFinal, fragmentShaderSmoothStepInterpolator, 'SmoothStep', 1.0);
-        this.addInterpolator(vertexShaderFinal, fragmentShaderSmoothStepInterpolator, 'Hermite Spline', 1.0);
+        this.addInterpolator(vertexShaderFinal, fragmentShaderNoiseInterpolation, 'Noise', 1.1);
+        // this.addInterpolator(vertexShaderFinal, fragmentShaderSmoothStepInterpolator, 'SmoothStep', 1.0);
+        // this.addInterpolator(vertexShaderFinal, fragmentShaderSmoothStepInterpolator, 'Hermite Spline', 1.0);
         this.addInterpolator(vertexShaderFinal, fragmentShaderExponentialInterpolator, 'Exponential', 1.0);
-        
+        // this.addInterpolator(vertexShaderFinal, fragmentShader3DCubic, '3D Cubic', 1.0);
         const length = Interpolators.interpolators.length;
         if(length > 0){
             Interpolators.activeInterPolater = Interpolators.interpolators[0];

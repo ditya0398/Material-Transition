@@ -378,3 +378,30 @@ export const fragmentShaderExponentialInterpolator = () => {
       gl_FragColor = vec4(interpolatedColor,1.0);
     }`
 }
+
+
+
+export const fragmentShader3DCubic = () => {
+  return `
+  uniform sampler2D tPrevious;
+  uniform sampler2D tPrevious1;
+  varying vec2 vUv;
+  uniform float time;
+
+  // Hermite interpolation function
+  float hermite(float t) {
+      return t * t * (3.0 - 2.0 * t);
+  }
+    void main() {
+      vec4 color1 = texture2D(tPrevious, vUv);
+      vec4 color2 = texture2D(tPrevious1, vUv);
+
+      float r =   mix(color1.r, color2.r, hermite(time));
+      float g =   mix(color1.g, color2.g, hermite(time));
+      float b  =  mix(color1.b, color2.b, hermite(time));
+
+    // Apply cubic interpolation to each color component
+    vec4 interpolatedColor = vec4(r,g,b,1.0);
+      gl_FragColor = vec4(interpolatedColor);
+    }`
+}

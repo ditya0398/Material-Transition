@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import MaterialsLibrary from "./core/MaterialsLibrary";
+import MaterialsLibrary from "./core/utils/MaterialsLibrary";
 import Interpolators from "./core/utils/Interpolators";
 
 class Environment{

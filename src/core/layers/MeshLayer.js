@@ -1,11 +1,11 @@
 import * as THREE from "three";
 import { IcosahedronGeometry, Mesh, PlaneGeometry } from "three";
-import Layer from "./Layer";
-import MaterialsLibrary from "./MaterialsLibrary";
-import { Layers } from "./LayerStack";
-import { fragmentShaderNoiseInterpolation, fragmentShaderHermitieInterpolation, fragmentShaderLinearInterpolation, vertexShaderCommon, vertexShaderFinal } from "./shaders";
-import Interpolators from "./utils/Interpolators";
-import MeshController from "./MeshController";
+import Layer from "../Layer";
+import MaterialsLibrary from "../utils/MaterialsLibrary";
+import { Layers } from "../LayerStack";
+import { fragmentShaderNoiseInterpolation, fragmentShaderHermitieInterpolation, fragmentShaderLinearInterpolation, vertexShaderCommon, vertexShaderFinal } from "../shaders";
+import Interpolators from "../utils/Interpolators";
+import MeshController from "../controllers/MeshController";
 
 class MeshLayerUI extends Layer{
    
@@ -15,14 +15,14 @@ class MeshLayerUI extends Layer{
     meshController = null;
     constructor(_environment, _meshGeom, _isVisible, _renderer, _interPolationDelta){
         super();
-        this.onAttach();
         this.setVisibility(_isVisible);
+        this.onAttach();
         this.meshController = new MeshController(_meshGeom, _environment, _renderer, _interPolationDelta);
         this.setName('MeshLayer');
 
     }
 
-    onAttach = () => {
+    onAttach = () => {  
     }
 
     onUpdate = () => {

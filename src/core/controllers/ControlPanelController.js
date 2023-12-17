@@ -1,6 +1,6 @@
-import { Layers } from "./LayerStack";
-import MaterialsLibrary from "./MaterialsLibrary";
-import Interpolators from "./utils/Interpolators";
+import { Layers } from "../LayerStack";
+import MaterialsLibrary from "../utils/MaterialsLibrary";
+import Interpolators from "../utils/Interpolators";
 
 //communicator between the UI and the components
 class ControlPanelController{

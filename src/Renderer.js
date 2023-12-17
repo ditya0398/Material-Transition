@@ -1,13 +1,11 @@
 import * as THREE from "three";
 import { Layers, PushLayer } from "./core/LayerStack";
-import CameraLayer from "./core/CameraLayer";
-import MeshLayerUI from "./core/MeshLayer";
-import UILayer from "./core/UILayer";
-import MaterialsLibrary from "./core/MaterialsLibrary";
-import Interpolators from "./core/utils/Interpolators";
-import SceneLayer from "./SceneLayer";
+import CameraLayer from "./core/layers/CameraLayer";
+import MeshLayerUI from "./core/layers/MeshLayer";
+import UILayer from "./core/layers/UILayer";
+import SceneLayer from "./core/layers/SceneLayer";
 import Environment from "./Environment";
-import onWindowResize from "./Utils";
+import onWindowResize from "./core/utils/Utils";
 
 
 class Renderer{
@@ -38,7 +36,7 @@ class Renderer{
         PushLayer(new SceneLayer(this.environment));
 
         //adding the camera layer
-        PushLayer(new CameraLayer());
+        PushLayer(new CameraLayer(this.environment.camera));
       
         //adding the mesh layer
         PushLayer(new MeshLayerUI(this.environment, new THREE.CircleGeometry(2,120), true, renderer));
@@ -54,8 +52,8 @@ class Renderer{
     render = () => {
      
         // Render the layers which are in the Layers stack
-        Layers.forEach((element) => {
-          element.onUpdate();
+        Layers.forEach((layer) => {
+          layer.onUpdate();
         });
 
         requestAnimationFrame(this.render);

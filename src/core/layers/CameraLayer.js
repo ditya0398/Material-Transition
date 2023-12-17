@@ -1,23 +1,17 @@
 import * as THREE from "three";
-import Layer from "./Layer";
+import Layer from "../Layer";
 
 class CameraLayer extends Layer{
     camera = null;
     name = null;
-    constructor(){
+    constructor(_camera){
         super();
+        this.camera = _camera;
         this.onAttach();
         this.setName('CameraLayer');
     }
 
     onAttach = () => {
-        this.camera = new THREE.PerspectiveCamera(
-            45,
-            window.innerWidth / window.innerHeight,
-            0.1,
-            1000
-          );
-          this.camera.position.z = 10;
     };
 
     onDetach = () => {
