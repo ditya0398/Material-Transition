@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import MaterialsLibrary from "./core/MaterialsLibrary";
+import Interpolators from "./core/utils/Interpolators";
 
 class Environment{
 
@@ -17,6 +18,7 @@ class Environment{
         this.camera.position.z = 10;
 
         new MaterialsLibrary();
+        new Interpolators();
     }
 }
 

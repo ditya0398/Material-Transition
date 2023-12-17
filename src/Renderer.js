@@ -21,12 +21,10 @@ class Renderer{
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setViewport(0,0, window.innerWidth, window.innerHeight);
 
-     
-        new Interpolators();
 
         document.body.appendChild(renderer.domElement);
         document.body.style.cssText = "margin: 0; overflow: hidden";
-        window.addEventListener("resize", onWindowResize(this.environment.camera, renderer), false);
+        window.addEventListener('resize', onWindowResize(this.environment.camera, renderer), false);
        
         this.intializeLayers(renderer);
         this.render();

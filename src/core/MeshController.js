@@ -29,9 +29,10 @@ class MeshController
     }
 
     initializeRTMeshes(numberOfCount, _geometry){
-        for(let i = 0; i < numberOfCount; i++){
-           this.RenderTargetComponents.push(new MeshProps(MaterialsLibrary.materials[i], _geometry));
-        }
+        
+           this.RenderTargetComponents.push(new MeshProps(MaterialsLibrary.materials[1], _geometry));
+           this.RenderTargetComponents.push(new MeshProps(MaterialsLibrary.materials[0], _geometry));
+
     }
 
     initFinalSceneMesh = (_geometry) => {
