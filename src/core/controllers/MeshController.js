@@ -30,9 +30,9 @@ class MeshController
     }
 
     initializeRTMeshes(numberOfCount, _geometry){
-        
-           this.RenderTargetComponents.push(new MeshProps(MaterialsLibrary.materials[1], _geometry));
-           this.RenderTargetComponents.push(new MeshProps(MaterialsLibrary.materials[0], _geometry));
+        for(let i = numberOfCount - 1; i >= 0; i--){
+           this.RenderTargetComponents.push(new MeshProps(MaterialsLibrary.materials[i], _geometry));
+        }
 
     }
 
@@ -91,7 +91,7 @@ class MeshController
         }
         this.renderer.render(this.environment.scene, this.environment.camera);
       }
-      
+
        // returs the specific mesh from the respective mesh layer
     getMesh = () => {
         return this.mesh;
